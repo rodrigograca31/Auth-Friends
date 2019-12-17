@@ -48,6 +48,9 @@ export default function FriendsList(props) {
 						>
 							🗑️
 						</div>
+						<div>
+							<a href={`/edit/${friend.id}`}>✏️</a>
+						</div>
 					</div>
 				);
 			})}

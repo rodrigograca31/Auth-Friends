@@ -1,39 +1,67 @@
-import React, { useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import axios from "../helpers/axios";
+import axiosWithAuth from "../helpers/axios";
+import { useParams } from "react-router-dom";
 
 export default function AddFriend() {
-	const nameRef = useRef();
-	const ageRef = useRef();
-	const emailRef = useRef();
+	const [form, setForm] = useState({
+		name: "",
+		age: "",
+		email: ""
+	});
+	let { id } = useParams();
 
-	const submit = e => {
-		e.preventDefault();
-		console.log("submit");
-		if (nameRef.current.children[1].children[0].value !== "") {
-			axios()
-				.post("/api/friends", {
-					name: nameRef.current.children[1].children[0].value,
-					age: ageRef.current.children[1].children[0].value,
-					email: emailRef.current.children[1].children[0].value
-				})
+	useEffect(() => {
+		console.log(id !== undefined);
+
+		if (id !== undefined) {
+			axiosWithAuth()
+				.get("/api/friends/" + id)
 				.then(response => {
 					console.log(response);
+					setForm(response.data);
 				})
 				.catch(error => {
 					console.log(error);
 				});
+		}
+	}, []);
+
+	const submit = e => {
+		e.preventDefault();
+		console.log("submit");
+		if (form.name !== "") {
+			id !== undefined
+				? axiosWithAuth().put("/api/friends/" + id, {
+						name: form.name,
+						age: form.age,
+						email: form.email
+				  })
+				: axiosWithAuth()
+						.post("/api/friends", {
+							name: form.name,
+							age: form.age,
+							email: form.email
+						})
+						.then(response => {
+							console.log(response);
+						})
+						.catch(error => {
+							console.log(error);
+						});
 		} else {
 			alert("emtpy");
 		}
-
-		console.log(emailRef.current.children[1].children[0].value);
-
-		nameRef.current.children[1].children[0].value = "";
-		ageRef.current.children[1].children[0].value = "";
-		emailRef.current.children[1].children[0].value = "";
 	};
+
+	const handleChange = e => {
+		setForm({
+			...form,
+			[e.target.name]: e.target.value
+		});
+	};
+
 	return (
 		<>
 			<h1>Add Friend:</h1>
@@ -42,8 +70,9 @@ export default function AddFriend() {
 				<TextField
 					id="standard-basic"
 					label="Name"
-					ref={nameRef}
 					name="name"
+					value={form.name}
+					onChange={handleChange}
 					variant="outlined"
 				/>
 				<br />
@@ -51,8 +80,9 @@ export default function AddFriend() {
 				<TextField
 					id="standard-basic"
 					label="Age"
-					ref={ageRef}
 					name="age"
+					value={form.age}
+					onChange={handleChange}
 					variant="outlined"
 					type="number"
 				/>
@@ -61,8 +91,9 @@ export default function AddFriend() {
 				<TextField
 					id="standard-basic"
 					label="Email"
-					ref={emailRef}
 					name="email"
+					value={form.email}
+					onChange={handleChange}
 					variant="outlined"
 					type="email"
 				/>

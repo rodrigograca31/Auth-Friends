@@ -13,6 +13,7 @@ function App() {
 			{/* <Route exact path="/friends" component={FriendsList} /> */}
 			<PrivateRoute exact path="/friends" component={FriendsList} />
 			<PrivateRoute exact path="/add" component={AddFriend} />
+			<PrivateRoute exact path="/edit/:id" component={AddFriend} />
 		</div>
 	);
 }
