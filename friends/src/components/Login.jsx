@@ -8,8 +8,10 @@ export default function Login(props) {
 
 	const submit = () => {
 		setIsLoading(true);
+		console.log(usernameRef);
+
 		axios
-			.post("http://localhost:5000/api/login", {
+			.post("/api/login", {
 				username: usernameRef.current.value,
 				password: passwordRef.current.value
 			})

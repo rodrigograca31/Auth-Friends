@@ -36,3 +36,9 @@
 		transform: rotate(360deg);
 	}
 }
+
+.friend {
+	border: 1px solid #282c34;
+	margin: 20px;
+	padding: 5px;
+}

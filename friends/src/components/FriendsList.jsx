@@ -22,14 +22,12 @@ export default function FriendsList(props) {
 			<h1>Friends: </h1>
 			{friends.map(friend => {
 				return (
-					<div>
+					<div className="friend" key={friend.id}>
 						<b>Name</b>: {friend.name}
 						<br />
 						<b>Age</b>: {friend.age}
 						<br />
 						<b>Email</b>: {friend.email}
-						<br />
-						<br />
 						<br />
 					</div>
 				);
