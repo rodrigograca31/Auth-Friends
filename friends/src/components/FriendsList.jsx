@@ -16,6 +16,19 @@ export default function FriendsList(props) {
 			});
 	}, []);
 
+	const deleteFriend = id => {
+		console.log(id);
+		axiosWithAuth()
+			.delete("/api/friends/" + id)
+			.then(response => {
+				console.log(response);
+				setFriends(response.data);
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	};
+
 	return (
 		<>
 			<NavLink to="/add">Add friend</NavLink>
@@ -29,6 +42,12 @@ export default function FriendsList(props) {
 						<br />
 						<b>Email</b>: {friend.email}
 						<br />
+						<div
+							onClick={e => deleteFriend(friend.id)}
+							className="delete"
+						>
+							🗑️
+						</div>
 					</div>
 				);
 			})}
